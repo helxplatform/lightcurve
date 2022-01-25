@@ -1,0 +1,582 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@500&family=Open+Sans&display=swap');
+
+body {
+  font-family: "Helvetica Neue", "Open Sans", Helvetica, Arial, sans-serif;
+  text-align: left;
+  color: #555;
+}
+
+h1 
+{
+  font-family: "Exo 2", sans-serif;
+  font-size: 30px;
+}
+
+h3
+{
+  font-weight: bold;
+  font-size: 20px;
+  font-family: "Exo 2", sans-serif;
+}
+
+h4
+{
+  font-family: "Exo 2", sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  margin-top:-20px;
+  padding: 0px;
+}
+
+p.sidebar_text
+{
+  font-family: "Helvetica Neue", "Open Sans", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  margin-top:0px;
+  padding: 0px;
+}
+
+h3.sectionheading {
+   width: 100%; 
+   text-align: left; 
+   border-bottom: 3px solid #0BA2D6; 
+   line-height: 0.1em;
+   margin: 10px 0 20px; 
+} 
+
+h3.sectionheading span { 
+    background:#fff; 
+    padding:0px 10px;
+    padding-left: 0px; 
+}
+
+h3.sectionheading_sidebar {
+   width: 100%; 
+   text-align: left; 
+   border-bottom: 3px solid #0BA2D6; 
+   line-height: 0.1em;
+   margin: 10px 0 20px; 
+} 
+
+h3.sectionheading_sidebar span { 
+    background:#FAFCFF; 
+    padding:0px 10px; 
+}
+
+p.expln_text {
+  text-align: right;
+  color: #555;
+  font-size: 12px;
+  margin-top:1px;
+  margin-bottom:1px;
+  line-height:1.0em;
+}
+
+p.expln_text_plot {
+  text-align: right;
+  color: #555;
+  font-size: 12px;
+  margin-top:-25px;
+  margin-bottom:1px;
+  line-height:1.0em;
+}
+
+p.sidebar_element_title {
+  text-align: center;
+  color: #000;
+  font-size: 15px;
+  margin-top:1px;
+  margin-bottom:1px;
+}
+
+#logos
+{
+  border: 1px solid #DDD;
+}
+
+#sidebar
+{
+   background: #FAFCFF;
+   position:absolute;
+   width:25%;
+   left:0%;
+   height:100vh;
+   text-align:left;
+   padding: 1%;
+   border: 2px solid black; 
+   border-top: 0px;
+   border-bottom: 0px;
+}
+
+#page
+{
+   background: #FFF;
+   position:absolute;
+   width:75%;
+   right:0%;
+   height:100vh;
+   padding:0px;
+   overflow:scroll;
+}
+
+#target_page
+{
+   padding:10px;
+   height:100vh;
+}
+
+#main_page
+{
+   position:absolute;
+   width:75%;
+   right:0%;
+   height:100vh;
+   padding:0px;
+   margin:0px;
+   overflow:scroll;
+   background-image:url("title_background.jpg");
+   background-position: center; /* Center the image */
+   background-repeat: no-repeat; /* Do not repeat the image */
+   background-size: cover; /* Resize the background image to cover the entire container */
+}
+
+#main_page_coords_container {
+  position:relative;
+  width:80%;
+  height:30%;
+  left:auto;
+}
+
+#coords_form.main_page_coords_form {
+  width:70%;
+  height:40%;
+  left:auto;
+  background:#FFF;
+  padding:35px;
+  border: 1px #AAA;
+}
+
+#err_disp
+{
+  font-size:10pt;
+  color:#F00;
+  margin-top:-1em;
+}
+
+#skyplot_container {
+  width: 95%;
+  height: auto;
+  background: #000;
+  margin: 5px;
+  position: relative;
+  left:10px;
+}
+
+#no_target_err {
+  width:100%;
+  height:100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align:center;
+  font-size:15pt;
+  color:#F00;
+}
+
+#lc_display_container {
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+
+#coords_form {
+  margin: auto;
+  position: relative;
+  width:400px;
+  top:10px;
+  margin-top:25%;
+}
+
+#target_info {
+  margin: 5px;
+  position: relative;
+  left:10px;
+}
+
+#lc_plot {
+  width: 100%;
+  position: relative;
+  width:100%;
+  height:auto;
+  min-height:350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align:center;
+}
+
+#lc_table_div
+{  
+   background: #FFF;
+   width:100%;
+   height:60%;
+   margin:auto;
+   text-align: center;
+}
+
+
+#loading_skyplot
+{
+  width: 64;
+  height: 64;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  z-index: 10;
+}
+
+img.sky {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  z-index: -1;
+}
+
+#skyplot_div {
+  width: 100%;
+  height: 100%;
+  position: relative;
+ }
+
+
+hr.target_info {
+	height:3px; 
+	width=60%; 
+	border-width:0;
+	border: 3px "#0BA2D6";
+	color:"#0BA2D6";
+}
+
+hr {
+   border: 1px solid;
+   width: 90%;
+   border-color: #0BA2D6;
+}
+
+table.targettable {
+	width:100%;
+  position:relative;
+  border-radius: 0px;
+  border: 0px solid black;
+  top:0px;
+  left:auto;
+  right:auto;
+  display:block;
+  font-size: 15px;
+}
+
+/* Tooltip container */
+.form_tooltip {
+color:#000;
+  position: relative;
+  display: inline-block;
+  border: 1pt #fff;
+  /*  border-bottom: 1px dotted black; If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.form_tooltip .form_tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: #121B3B;
+  color: #fff;
+  font-size:10pt;
+  text-align: left;
+  padding: 10px;
+  border-color: #FFF;
+  border-radius: 0px;
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.form_tooltip:hover .form_tooltiptext {
+  visibility: visible;
+  border:1pt #fff;
+}
+ 
+input[type=button], input[type=submit], input[type=reset] {
+    font-family: "Helvetica Neue", "Open Sans", Helvetica, Arial, sans-serif;	
+    display: inline-block;
+    margin:auto;
+    width:100%;
+    padding: 4px 4px;
+    background-color: #fff;
+    color: #0BA2D6;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: all 0.5s;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+input[type=text] {
+    font-family: "Helvetica Neue", "Open Sans", Helvetica, Arial, sans-serif;
+    display: inline-block;
+    margin:auto;
+    width:100%;
+    padding: 1px;
+    background-color: #F2F2F2;
+    color: #AAA;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    transition: all 0.5s;
+    border: 1px;
+    border-color: #000;
+    outline: 1px;
+}
+
+input[type=button], input[type=submit], input[type=reset]:hover {
+    outline: none;
+    background-color: #0BA2D6;
+    color: #fff;
+}
+
+
+$base-spacing-unit: 24px;
+$half-spacing-unit: $base-spacing-unit / 2;
+
+$color-alpha: #1772FF;
+$color-form-highlight: #EEEEEE;
+
+
+*, *:before, *:after {
+	box-sizing:border-box;
+}
+
+.table_container {
+  width:100%;
+  position:relative;
+	max-width: 1200px;
+	margin-right:auto;
+	margin-left:auto;
+	display:block;
+	justify-content:right;
+	align-items:right;
+	min-height:100vh;
+}
+
+
+.table {
+font-family: "Helvetica Neue", "Open Sans", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+
+	width:100%;
+  position:relative;
+  border-radius: 1px;
+  border: 1px solid black;
+  top:0px;
+  left:auto;
+  right:auto;
+  display:block;
+}
+
+.header-item {
+	background:#0BA1D6;
+}
+
+.table-row {
+	display:flex;
+	width:100%;
+  padding-left:10px;
+  padding-right:10px;
+	padding:($half-spacing-unit * 1.5) 0;
+}
+
+.table-row-header {
+  display:flex;
+  width:100%;
+  padding-left:10px;
+  padding-right:10px;
+  padding:($half-spacing-unit * 1.5) 0;
+  background:#0BA1D6;
+} 
+
+.table-row:nth-of-type(odd) {
+  background: #F0F0FF;
+}
+
+.table-data {
+	flex: 1 1 50%;
+	text-align:right;
+  padding-left:10px;
+}
+
+.filter__link {
+	color:white;
+	text-decoration: none;
+	position:relative;
+	display:inline-block;
+	padding-left:$base-spacing-unit;
+	padding-right:$base-spacing-unit;
+}
+
+.filter__link::after {
+  content: '';
+  position: absolute;
+  right: -15px;
+  color: white;
+  font-size: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.filter__link.desc::after {
+  content: '\2193';
+}
+.filter__link.asc::after {
+  content: '\2191';
+}
+
+
+.active_table_selection
+{
+  background-color: #000;
+}
+
+.scrollingtable {
+  box-sizing: border-box;
+  display: inline-block;
+  vertical-align: middle;
+  overflow: hidden;
+  width: 100%; /*set table width here if using fixed value*/
+  /*min-width: 100%;*/ /*set table width here if using %*/
+  height: 100%; /*set table height here; can be fixed value or %*/
+  /*min-height: 104px;*/ /*if using % height, make this at least large enough to fit scrollbar arrows + captions + thead*/
+  font-family: "Helvetica Neue", "Open Sans", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  line-height: 20px;
+  padding-top: 0px; /*this determines top caption height*/
+  padding-bottom: 20px; /*this determines bottom caption height*/
+  text-align: center;
+  margin:auto;
+}
+
+.scrollingtable a
+{
+color: white;
+}
+
+.scrollingtable * {box-sizing: border-box;}
+.scrollingtable > div {
+  position: relative;
+  border-top: 1px solid black; /*top table border*/
+  height: 100%;
+background: #0BA1D6;	/*column header background color*/
+  padding-top: 20px; /*this determines column header height*/
+}
+.scrollingtable > div:before {
+  top: 0;
+  background: white; 
+}
+
+.scrollingtable > div:before,
+.scrollingtable > div > div:after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 50%;
+  left: 0;
+}
+.scrollingtable > div > div {
+  /*min-height: 43px;*/ /*if using % height, make this at least large enough to fit scrollbar arrows*/
+  max-height: 100%;
+  overflow: scroll; /*set to auto if using fixed or % width; else scroll*/
+  overflow-x: hidden;
+  border: 1px solid black; /*border around table body*/
+}
+.scrollingtable > div > div:after {background: white;} /*match page background color*/
+.scrollingtable > div > div > table {
+  width: 100%;
+  border-spacing: 0;
+  margin-top: -20px; /*inverse of column header height*/
+  /*margin-right: 17px;*/ /*uncomment if using % width*/
+}
+.scrollingtable > div > div > table > caption {
+  position: absolute;
+  top: -20px; /*inverse of caption height*/
+  margin-top: -1px; /*inverse of border-width*/
+  width: 100%;
+  font-weight: bold;
+  text-align: center;
+}
+.scrollingtable > div > div > table > * > tr > * {padding: 0;}
+.scrollingtable > div > div > table > thead {
+  vertical-align: bottom;
+  white-space: nowrap;
+  text-align: center;
+}
+.scrollingtable > div > div > table > thead > tr > * > div {
+  display: inline-block;
+  padding: 0 6px 0 6px; /*header cell padding*/
+}
+.scrollingtable > div > div > table > thead > tr > :first-child:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px; /*match column header height*/
+  border-left: 1px solid black; /*leftmost header border*/
+}
+.scrollingtable > div > div > table > thead > tr > * > div[label]:before,
+.scrollingtable > div > div > table > thead > tr > * > div > div:first-child,
+.scrollingtable > div > div > table > thead > tr > * + :before {
+  position: absolute;
+  top: 0;
+  white-space: pre-wrap;	
+  color: white; /*header row font color*/
+}
+.scrollingtable > div > div > table > thead > tr > * > div[label]:before,
+.scrollingtable > div > div > table > thead > tr > * > div[label]:after {content: attr(label);}
+.scrollingtable > div > div > table > thead > tr > * + :before {
+  content: "";
+  display: block;
+  min-height: 20px; /*match column header height*/
+  padding-top: 1px;
+
+  border-left: 0px solid black; /*borders between header cells*/
+}
+.scrollingtable .scrollbarhead {float: right;}
+.scrollingtable .scrollbarhead:before {
+  position: absolute;
+  width: 100px;
+  top: -1px; /*inverse border-width*/
+  background: white; /*match page background color*/
+}
+.scrollingtable > div > div > table > tbody > tr:after {
+  content: "";
+  display: table-cell;
+  position: relative;
+  padding: 0;
+  border-top: 1px solid black;
+  top: -1px; /*inverse of border width*/
+}
+.scrollingtable > div > div > table > tbody {vertical-align: top;}
+.scrollingtable > div > div > table > tbody > tr {background: #F0F0FF;}
+
+.scrollingtable > div > div > table > tbody > tr > * {
+  border-bottom: 0px solid black;
+  padding: 0 6px 0 6px;
+  height: 20px; /*match column header height*/
+
+}
+.scrollingtable > div > div > table > tbody:last-of-type > tr:last-child > * {border-bottom: none;}
+.scrollingtable > div > div > table > tbody > tr:nth-child(even) {background: white;} /*alternate row color*/
+.scrollingtable > div > div > table > tbody > tr > * + * {border-left: 0px solid black;} /*borders between body cells*/
+.scrollingtable > div > div > table > tbody > td {border-left: 0px solid black;} /*borders between body cells*/
+
+

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lightcurve-deployment
+spec:
+  selector:
+    matchLabels:
+      app: flask
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: flask
+    spec:
+      containers:
+      - name: flask
+        image: wtstephens/lcservice:0.0.1
+        resources:
+          limits:
+            memory: 1024Mi
+          requests:
+            memory: 512Mi
+        ports:
+          - containerPort: 8080
+        env:
+          - name: cloudenv
+            value: renci
+          - name: S3_ACCESS_KEY_ID
+            value: S3_ACCESS_KEY_ID-value
+          - name: S3_SECRET_ACCESS_KEY
+            value: S3_SECRET_ACCESS_KEY-value
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lightcurveservice
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+    name: http
+  selector:
+    app: flask

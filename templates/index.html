@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+<head>
+  <title>Light Curve</title>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <h1>Light curve</h1>
+
+  <h2>Files</h2>
+  {% for fn in files %}    <p>{{ fn }}</p>
+  {% endfor %}
+</body>
+</html>

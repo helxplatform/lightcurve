@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {{ resources | safe }}
+  {% include 'standard_header.html' | safe %}
+  <title>{{ title }}</title>
+</head>
+<body>
+    <div id="sidebar">
+      {% include 'standard_sidebar.html' | safe %}
+      {{ sidebar_items | safe }}
+      <h3 class="sectionheading_sidebar"><span>Target information</span></h3>
+      <div id="target_info"></div>
+
+      <p style="margin-bottom:30px;"> 
+      
+      <form onsubmit="go_to_targetlist();return false" name="coords_form">
+	<table align="right" style="margin-top:-25px; margin-bottom:25px"><tr>
+      <!-- <td width=70%><input type="text" size="20" id="coords_input_targetpage" onclick="clear_box()" onblur="return_box()" width="70%" value="New target RA, dec"></td> 
+      <td><input type="submit" value="Search" class="button_targetpage" width="30%"> </td> -->
+      </tr></table>
+      </form>
+
+      <h3 class="sectionheading_sidebar"><span>Evryscope image of region
+      </span></h3>
+            <div id="skyplot_container">
+                <div id="loading_skyplot"><img src="/static/clear.gif" id="loading_skyplot_img"></div>
+                <div id="skyplot_div"><img class="sky" src="/static/clear.gif" id="skyplot_img"></div>
+            </div>
+      <p class="expln_text">red crosshair = target location</p>
+      <p class="expln_text">click on LC plot point to update image</p>
+      <p class="expln_text">(image updates once per 2 hours observation)</p>
+    </div>
+
+  <div id="page">
+    <div id="target_page">
+    <div id="lc_display_container">
+      <h3 class="sectionheading"><span>Light curve plot</span></h3>
+  
+      <div id="lc_plot">Loading...</div>
+      </div>
+
+      <!-- <p class="expln_text_plot">Scrollwheel / pinch-zoom on top plot to change magnitude range</p> -->
+      <!-- <p class="expln_text_plot">Click on any point to show Evryscope image from that time in sidebar</p> -->
+
+    <p style="margin-bottom:30px;">
+
+      <h3 class="sectionheading"><span>Full light curve data</span></h3>
+      <h4 align="right">Download: <a href="/dynamic/download_lc/{{star_ra}}/{{star_dec}}/txt">.txt</a> <a href="/dynamic/download_lc/{{star_ra}}/{{star_dec}}/csv">.csv</a> </h4>
+
+      <div id="lc_table_div">Loading...</div>
+      </div>
+    </div>
+  </div>
+
+ </div>
+
+  <script>
+  var display_full = false;
+  function update_table_to_full()
+  {
+     display_full = true;
+     document.getElementById("lc_table_div").innerHTML = "Loading...";
+     update_page(false, true, false);
+  }
+
+  function update_page(update_chart, update_table, update_target_info)
+  {
+       ra = {{star_ra}};
+       dec = {{star_dec}};
+  
+       var api_url = '/dynamic/target_display_data/'+ ra + '/' + dec + '/full';
+       if (display_full == false) {api_url = '/dynamic/target_display_data/'+ ra + '/' + dec + '/smalltable';}
+       
+       fetch(api_url)
+        .then(function(response) { 
+            return response.json(); 
+        })
+        .then(function(item) { 
+          if (update_chart)
+          {
+             const el = document.getElementById("lc_plot");
+             // first remove the previous charts as child
+             // without this, Bokeh appends
+            while (el.hasChildNodes()) {
+                el.removeChild(el.lastChild);
+            }
+            Bokeh.embed.embed_item(item[0],"lc_plot"); 
+          }
+
+            var image = document.getElementById("skyplot_img");
+            var downloadingImage = new Image();
+            downloadingImage.onload = function(){
+                image.src = this.src;   
+            };
+
+            downloadingImage.src = '/dynamic/image/' + item[1][0] + '/' + item[1][1] + '/' + item[1][2] + '/500/300/plot_stars=False';
+
+          if (update_table) {document.getElementById("lc_table_div").innerHTML = item[3];}
+          if (update_target_info) {document.getElementById("target_info").innerHTML = item[2];}
+
+        })
+        .catch(error => console.error(error) );
+
+    return false;
+  }
+
+function go_to_targetlist()
+{
+    var coords = document.getElementById("coords_input_targetpage").value;
+    ra = coords.split(" ")[0];
+    dec = coords.split(" ")[1];
+
+    var target = "/dynamic/target_list/"+ra+"/"+dec;
+    
+    window.location = target;
+}
+
+function clear_box()
+{
+    box = document.getElementById("coords_input_targetpage");
+    if (box.value == "New target RA, dec") box.value = "";
+    box.style.color = "#000";
+
+}
+
+function return_box()
+{
+    box = document.getElementById("coords_input_targetpage");
+    if (box.value == "")
+    {
+      box.style.color = "#AAA";
+      box.value = "New target RA, dec";
+    }
+}
+    
+  </script>
+
+
+</body>
+<script>
+  update_page(true, true, true); 
+</script>

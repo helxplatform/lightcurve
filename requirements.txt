@@ -1,0 +1,19 @@
+Flask==2.0.2
+google-cloud-storage
+scipy
+astropy
+bokeh
+astropy-healpix
+PyYAML>=3.10
+python-dateutil>=2.1
+Jinja2>=2.7
+numpy>=1.11.3
+pillow>=4.0
+packaging>=16.8
+tornado>=5
+typing_extensions >=3.7.4
+pandas
+msgpack
+pytz
+healpy
+boto3

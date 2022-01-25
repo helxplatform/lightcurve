@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {{ resources }}
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+ 
+	<link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
+
+    <title>Discovering with the Evryscopes!</title>
+<!--
+Reflux Template
+https://templatemo.com/tm-531-reflux
+-->
+    <!-- Bootstrap core CSS -->
+    <link href="/static/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Additional CSS Files -->
+     <link rel="stylesheet" href="/static/style.css" />
+  </head>
+
+  <body>
+    <div id="page-wraper">
+      <!-- Sidebar Menu -->
+      <div class="responsive-nav">
+        <i class="fa fa-bars" id="menu-toggle"></i>
+        <div id="menu" class="menu">
+          <i class="fa fa-times" id="menu-close"></i>
+          <div class="container">
+            <div class="image">
+              <a href="#"><img width="200px" src="/static/evryscope_logo_small.png" alt="" /></a>
+            </div>
+            <div class="author-content">
+              <h4>Evryscope Light Curve Server</h4>
+            </div>
+            <nav class="main-nav" role="navigation">
+              <ul class="main-menu">
+                <li><a href="#section1">Coordinate query</a></li>
+                <li><a href="#section2">Target selection</a></li>
+                <li><a href="#section3">Evryscope Discoveries</a></li>
+              </li>
+              </ul>
+            </nav>
+            <div class="copyright-text">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section class="section getting-started" data-section="section1">
+        <div class="container">
+          <div class="section-heading">
+            <h2>Getting Started</h2>
+            <div class="line-dec"></div>
+          </div>
+          <div class="left-image-post">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="left-image">
+                  <img src="/static/evryscope_deployment_thumb.jpg" alt="">
+
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="right-text">
+                  <h4>The Evryscopes</h4>
+                  <p>
+		    The Evryscopes are telescopes that look at the entire sky every two minutes. They have 100x better resolution than an average camera, and collect much more light, allowing them to see much fainter stars. 
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p>
+
+          <div class="left-image-post">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="left-image">
+                  <img src="/static/transits.gif" alt="">
+
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="right-text">
+                  <h4>Discovering new wonders in the sky</h4>
+                  <p>
+        Astronomers use the Evryscopes to watch millions of stars for brightness changes that could mean they are exotic types of stars or perhaps even have their own planets. They use <emph>light curves</emph> to find if stars change brightness repeatedly over the years the Evryscopes monitor them.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="section" data-section="section2">
+        <div class="container">
+          <div class="section-heading2">
+            <h2>Test your data discovery skills</h2>
+            <div class="line-dec"></div>
+            <span>Astronomers understand newly-discovered stars by comparing them to known stars. Try it out!</span>
+          </div>
+
+          <!-- Below stubs are updated with Javascript queries -->
+          <div id="lc_plot">
+
+          </div>
+
+
+          <h3><span>What type of object is this star? </span></h3>
+
+          <div class="interactive_options">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="interactive-item" id="interactive-item-1"><img src="/static/planet_expln.png" onclick="get_result(this,1)"></div>
+                <div class="interactive-item" id="interactive-item-2"><img src="/static/eb_expln.png" onclick="get_result(this,2)"></div>
+              </div>
+              <div class="col-md-6">
+                <div class="interactive-item" id="interactive-item-3"><img src="/static/pulse_expln.png" onclick="get_result(this,3)"></div>
+                <div class="interactive-item" id="interactive-item-4"><img src="/static/novar_expln.png" onclick="get_result(this,4)"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+    </div>
+
+    <!-- Scripts -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
+
+    <script src="/static/js/isotope.min.js"></script>
+    <script src="/static/js/owl-carousel.js"></script>
+    <script src="/static/js/lightbox.js"></script>
+    <script src="/static/js/custom.js"></script>
+    <script>
+      //according to loftblog tut
+      $(".main-menu li:first").addClass("active");
+
+      var showSection = function showSection(section, isAnimate) {
+        var direction = section.replace(/#/, ""),
+          reqSection = $(".section").filter(
+            '[data-section="' + direction + '"]'
+          ),
+          reqSectionPos = reqSection.offset().top - 0;
+
+        if (isAnimate) {
+          $("body, html").animate(
+            {
+              scrollTop: reqSectionPos
+            },
+            800
+          );
+        } else {
+          $("body, html").scrollTop(reqSectionPos);
+        }
+      };
+
+      var checkSection = function checkSection() {
+        $(".section").each(function() {
+          var $this = $(this),
+            topEdge = $this.offset().top - 80,
+            bottomEdge = topEdge + $this.height(),
+            wScroll = $(window).scrollTop();
+          if (topEdge < wScroll && bottomEdge > wScroll) {
+            var currentId = $this.data("section"),
+              reqLink = $("a").filter("[href*=\\#" + currentId + "]");
+            reqLink
+              .closest("li")
+              .addClass("active")
+              .siblings()
+              .removeClass("active");
+          }
+        });
+      };
+
+      $(".main-menu").on("click", "a", function(e) {
+        e.preventDefault();
+        showSection($(this).attr("href"), true);
+      });
+
+      $(window).scroll(function() {
+        checkSection();
+      });
+    </script>
+
+    <!-- Update target interactive -->
+    <script>
+        var target_n = Math.floor(Math.random()*100);
+        var n_good = 0;
+        var n_total = 0;
+        var correct_answer = 0;
+
+        function update_interactive()
+        {
+            fetch('/target_selector/' + target_n.toString() + '/' + history)
+            .then(function(response) { return response.json(); })
+            .then(function(item) {
+                const el = document.getElementById("lc_plot");
+                 // first remove the previous charts as child
+                 // without this, Bokeh appends
+                while (el.hasChildNodes()) {el.removeChild(el.lastChild);}
+  
+                Bokeh.embed.embed_item(item[0],"lc_plot"); 
+                correct_answer = item[1];
+            })
+            .catch(error => console.error(error) );
+
+            return true;
+        }
+
+        function get_result(element, clicked)
+        {
+            console.log(element.id);
+
+            var old_src = ""
+            if (clicked == 1) old_src = "/static/planet_expln.png"
+            if (clicked == 2) old_src = "/static/eb_expln.png"
+            if (clicked == 3) old_src = "/static/pulse_expln.png"
+            if (clicked == 4) old_src = "/static/novar_expln.png"
+
+
+            if (clicked == correct_answer) {
+                element.src = "/static/tick.png"
+                target_n+=1;
+                setTimeout(() => { update_interactive()}, 500);
+            }
+            else element.src = "/static/cross.png"
+            setTimeout(() => { element.src = old_src}, 1000);
+        }
+
+        // load the first chart on startup
+        update_interactive(); 
+    </script>
+  </body>
+</html>

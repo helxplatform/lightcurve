@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ {% include 'standard_header.html' | safe %}
+</head>
+<body>
+    <div id="sidebar">
+      {% include 'standard_sidebar.html' | safe %}
+      {{ sidebar_items | safe }}
+
+      <h3 class="sectionheading"><span>Welcome</span></h3>
+      <p class="sidebar_text">The Evryscope Lightcurve Server contains tens of thousands of epochs of photometric measurements for all stars brighter than g=15.</h5>
+      <p>
+      <img align="center" src="dynamic/epoch_map" width="100%">
+      <p class="sidebar_text">The Evryscopes, based in California and Chile, observe 8,000 sq. deg. every two minutes, with a 13-arcsec pixel scale and a limiting magnitude of g=15-16.</p>
+
+      <h3 class="sectionheading"><span>Instructions</span></h3>
+      <p class="sidebar_text">1. Input target coordinates</p>
+      <p class="sidebar_text">2. Select from nearby stars</p>
+      <p class="sidebar_text">3. Click on target names for full light curves</p>
+
+    </div>
+
+  <div id="main_page" class="main_page">
+
+       <div class="main_page_coords_container">
+
+            <div id="coords_form" class="main_page_coords_form">
+
+	 <h3 class="sectionheading" style="font-size:30px;"><span style="padding-left:0px;">Evryscope Lightcurve Query</span></h3>
+
+                      <form onsubmit="resolve_and_go_to_target();return false" name="coords_form" style="padding-top:20px">
+                      <table width="100%">
+			<tr>
+			  <td>
+			    <input type="text" size="20" id="coords_input" onclick="clear_box()" onblur="return_box()" value="[Beta: Northern data only] Coords. or target name">
+			  </td>
+			  <td style="padding:0px; width:1px;" align="center">
+			    <div class="form_tooltip"><img src="static/tooltip.png" height="22pt" valign="center" style="margin-top:-2px"> 
+			      <span class="form_tooltiptext">Enter target name (resolved by SIMBAD), or RA & Dec, decimal or sexagesimal. Comma or space separated.</span>
+			    </div>
+			    
+			  </td>
+			  </tr>
+		      </table>
+                      <p>
+                        
+                        <p>
+                      <div id="err_disp"> </div>
+
+                      <input type="submit" value="Search for lightcurves" class="button">
+                      </form>
+            </div>
+        </div>
+
+  </div>
+
+</body>  
+
+<script>
+
+function isNumeric(num){
+  return !isNaN(num)
+}
+
+async function simbad_resolve(text) {
+   var url = "https://simbad.u-strasbg.fr/simbad/sim-script?script=" + encodeURIComponent("format object \"%COO(d;A,D;;J2000;)\"\noutput console=off\n" + text)
+
+   var result = "Object not found";
+
+   try
+   {
+       const simbad_data = await fetch(url)
+       const response = await simbad_data.text();
+       const errorflag = "::error:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+
+       if (response.search(errorflag) >= 0) 
+       {
+          result = "Object not found";
+       }
+       else
+       {
+           const dataflag = "::data::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+           var dataposn = response.search(dataflag) + dataflag.length;
+           var coords = response.slice(dataposn,-1);
+           coords = coords.trim()
+           result = coords;
+       }
+
+       return(result);
+   }
+   catch(err)
+   {
+      return("Error doing SIMBAD lookup");
+   }
+}
+
+function clean_coords(coords)
+{
+    var errormessage = "success";
+    var ra = 0;
+    var dec = 0;
+
+    try {  coords = coords.replace(",", " ") 
+           if (coords.split(/\s+/).length != 2) {errormessage = "Please enter an RA and Dec separated by a space or comma";}
+           ra_string = coords.split(" ")[0]; 
+           dec_string = coords.split(" ")[1]; 
+    }
+    catch (err)
+    {
+       errormessage = "Please enter an RA and Dec separated by a space or comma";
+       console.log(err);
+    }
+
+    if (errormessage == "success" && (ra_string.split(":").length == 3) && (dec_string.split(":").length == 3))
+    {
+       try
+       {
+          var ra_hours = +ra_string.split(":")[0];
+          var ra_mins = +ra_string.split(":")[1];
+          var ra_secs = +ra_string.split(":")[2];           
+
+          ra = (ra_hours + (ra_mins / 60.0) + (ra_secs / 3600.0)) * 360.0 / 24.0;
+
+          var dec_degs = +dec_string.split(":")[0];
+          var dec_mins = +dec_string.split(":")[1];
+          var dec_secs = +dec_string.split(":")[2];
+
+          var dec_sign = 1.0;
+          if (dec_degs < 0.0) { dec_sign = -1.0; dec_degs = -dec_degs;}
+          dec = dec_sign * (dec_degs + dec_mins / 60.0 + dec_secs / 3600.0);
+    
+          if (isNaN(dec) || isNaN(ra)) errormessage = "Error parsing RA/Dec";
+       }
+       catch (err)
+       {
+          errormessage = "Error parsing RA/Dec";
+          console.log(err);
+       }
+    }
+    else
+    {
+       try
+       {
+           var ra = +ra_string;
+           var dec = +dec_string;
+           if (isNaN(dec) || isNaN(ra)) errormessage = "Error parsing RA/Dec";
+       }
+       catch (err)
+       {
+          errormessage = "Error parsing RA/Dec";
+          console.log(err);
+       } 
+    }
+    return {ra, dec, errormessage}
+}
+
+function go_to_target(coords) {
+  console.log(coords);
+
+  if (coords == "Object not found" || coords.search("Error") == 0 || coords.search("Please") == 0)
+  {
+      err_disp = document.getElementById("err_disp");
+      err_disp.innerHTML = coords;
+  }
+
+  else
+  {
+    // takes in ra,dec in "ra,dec" format because of promise fetch stuff
+    const ra = coords.split(",")[0];
+    const dec = coords.split(",")[1];
+    const target = "dynamic/target_list/"+ra+"/"+dec;
+    window.location = target;
+  }
+}
+
+function resolve_and_go_to_target()
+{
+    var text = document.getElementById("coords_input").value;
+    text = text.replace(","," ");
+    text = text.replace("  ", " ");
+    text = text.replace("   ", " ");
+    text = text.replace("    ", " ");
+
+    // decide what type of input we have
+    // assume that all strings that start with a number and then a number or a . are coordinates
+    var coords = "Object not found";
+    if (isNumeric(text.substring(0,1)) && (isNumeric(text.substring(1,2)) || text.substring(0,1) == ".")) 
+    {
+       let {ra, dec, errormessage} = clean_coords(text);
+
+       if (errormessage == "success") 
+       {
+          go_to_target(ra + "," + dec);
+       }
+       else 
+       {
+           go_to_target(errormessage);
+       }
+    }
+    else 
+    {
+        simbad_resolve(text).then(go_to_target);
+    }
+}
+
+
+function clear_box()
+{
+    box = document.getElementById("coords_input");
+    if (box.value == "[Beta: Northern data only] Coords. or target name") box.value = "";
+    box.style.color = "#000";
+}
+
+function return_box()
+{
+    box = document.getElementById("coords_input");
+    if (box.value == "")
+    {
+      box.style.color = "#AAA";
+      box.value = "Coordinates (e.g. 123.23 -23.3) or target name";
+    }
+}
+
+</script>

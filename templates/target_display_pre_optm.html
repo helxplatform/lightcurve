@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {{ resources | safe }}
+  {% include 'standard_header.html' | safe %}
+  <title>{{ title }}</title>
+</head>
+<body>
+    <div id="sidebar">
+      {% include 'standard_sidebar.html' | safe %}
+      {{ sidebar_items | safe }}
+      <div id="target_info"></div>
+
+      <hr>
+      <p class="sidebar_element_title">Evryscope image of region</p>
+
+            <div id="skyplot_container">
+                <div id="loading_skyplot"><img src="/static/clear.gif" id="loading_skyplot_img"></div>
+                <div id="skyplot_div"><img class="sky" src="/static/clear.gif" id="skyplot_img"></div>
+            </div>
+      <p class="expln_text">red crosshair = target location</p>
+      <p class="expln_text">click on LC plot point to update image</p>
+      <p class="expln_text">(image updates once per 2 hours observation)</p>
+    </div>
+
+  <div id="page">
+    <div id="target_page">
+    <div id="lc_display_container">
+      <h3>Light curve plot</h3>
+  
+      <div id="lc_plot"></div>
+      </div>
+
+      <p class="expln_text">Drag / change width of bottom plot to change time range</p>
+      <p class="expln_text">Scrollwheel / pinch-zoom on top plot to change magnitude range</p>
+      <p class="expln_text">Click on any point to show Evryscope image from that time in sidebar</p>
+
+      <hr>
+      <table width=100%><tr>
+      <td><h3>Full light curve data</h3>
+      <td align="right"><h4>Download: <a href="/dynamic/download_lc/{{star_ra}}/{{star_dec}}/txt">.txt</a> <a href="/dynamic/download_lc/{{star_ra}}/{{star_dec}}/csv">.csv</a> 
+      </h4>
+      </tr></table>
+      <div id="lc_table_div"></div>
+      </div>
+    </div>
+  </div>
+
+ </div>
+
+  <script>
+  
+  function plot_graph()
+  {
+    ra = {{star_ra}};
+    dec = {{star_dec}};
+    
+    fetch('/dynamic/plot/'+ ra + '/' + dec)
+
+        .then(function(response) { 
+            return response.json(); 
+        })
+        .then(function(item) { 
+            console.log("Bokeh 1");  
+             const el = document.getElementById("lc_plot");
+             // first remove the previous charts as child
+             // without this, Bokeh appends
+            while (el.hasChildNodes()) {
+                el.removeChild(el.lastChild);
+            }
+            console.log("Bokeh2 ");
+            Bokeh.embed.embed_item(item[0],"lc_plot"); 
+
+            var image = document.getElementById("skyplot_img");
+            var downloadingImage = new Image();
+            downloadingImage.onload = function(){
+                image.src = this.src;   
+            };
+
+            downloadingImage.src = '/dynamic/image/' + item[1][0] + '/' + item[1][1] + '/' + item[1][2] + '/500/300/plot_stars=False';
+
+            //document.getElementById("lc_table_div").innerHTML = item[3];
+
+            //document.getElementById("target_info").innerHTML = item[2];
+
+        })
+        .catch(error => console.error(error) );
+
+    return false;
+  }
+
+  // plot_graph();
+  
+  </script>
+
+
+</body>
+<script>
+  plot_graph(); 
+</script>
