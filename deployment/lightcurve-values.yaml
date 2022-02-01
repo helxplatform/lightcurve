@@ -1,0 +1,33 @@
+image:
+  repository: wtstephens/lcservice
+  tag: "0.0.1"
+
+extraEnv:
+  S3_ACCESS_KEY_ID: "--placeholder--"
+  S3_SECRET_ACCESS_KEY: "--placeholder--"
+
+resources:
+  limits:
+    memory: 1024Mi
+  requests:
+    memory: 512Mi
+
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  hosts:
+    - host: lightcurve.apps.renci.org
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: lightcurve
+              port:
+                number: 8080
+  tls:
+   - secretName: lightcurve.apps.renci.org-tls
+     hosts:
+       - lightcurve.apps.renci.org

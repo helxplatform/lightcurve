@@ -1,5 +1,14 @@
 # Sterling deployment
 
+## Using helm
+
+```
+helm upgrade --install dev lightcurve --values lightcurve-values.yaml --dry-run
+
+```
+
+## Using kubectl
+
 Deploy both the service and ingress.
 
 Quick summary of the commands:
@@ -11,7 +20,7 @@ kubectl -n argus-dev apply -f lightcurve-ingress.yaml
 
 -----
 
-## k8s deployment of the service
+### k8s deployment of the service
 
 Use the script which implements the sed substitutions of the secret S3 values: `k8-deploy-service.sh`
 
@@ -32,7 +41,7 @@ Alternatively, use one of the following manual methods:
     sed -e "s/S3_ACCESS_KEY_ID-value/$S3_ACCESS_KEY_ID/g" -e "s/S3_SECRET_ACCESS_KEY-value/$S3_SECRET_ACCESS_KEY/g" lightcurve-service.yaml | kubectl apply -f -
     ```
 
-## k8s ingress creation
+### k8s ingress creation
 
 Run the kubectl command to apply the ingress.
 
