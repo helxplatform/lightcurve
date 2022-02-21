@@ -10,6 +10,7 @@ import astropy.coordinates
 import healpy
 import os.path
 import s3_util
+import tempfile
 
 local_config = configparser.ConfigParser()
 local_config.read('config.ini')
@@ -77,7 +78,8 @@ class s3_storage:
 
     def download_object(self, filename):
         s3client = self.get_client()
-        localfilename = "./tmp/s3obj.tmp" # + filename
+        temp_name = next(tempfile._get_candidate_names()) # e.g. px9cp65s
+        localfilename = f"./tmp/s3obj-{temp_name}.tmp"
         try:
             # e.g. "light_curves/healpixes/000000.evrlc"
             # e.g. "light_curves/minipix2/000002.evrlc"
@@ -92,6 +94,7 @@ class s3_storage:
             return None
         with open(localfilename, 'rb') as f:
             s = f.read()
+        os.remove(localfilename)
         return s
 
     def list_files(self):

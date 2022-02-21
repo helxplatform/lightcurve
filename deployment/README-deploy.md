@@ -4,8 +4,8 @@
 
 ```
 # install
-helm upgrade --install dev lightcurve --values lightcurve-values.yaml
+helm --namespace argus-dev upgrade --install evryscope lightcurve --values lightcurve-values.yaml
 
 # check values
-helm upgrade --install dev lightcurve --values lightcurve-values.yaml --dry-run
+helm upgrade --install argus-dev lightcurve --values lightcurve-values.yaml --dry-run
 ```
