@@ -79,7 +79,8 @@ class s3_storage:
     def download_object(self, filename):
         s3client = self.get_client()
         temp_name = next(tempfile._get_candidate_names()) # e.g. px9cp65s
-        localfilename = f"./tmp/s3obj-{temp_name}.tmp"
+        #localfilename = f"./tmp/s3obj-{temp_name}.tmp"
+        localfilename = f"/tmp/s3obj-{temp_name}.tmp"
         try:
             # e.g. "light_curves/healpixes/000000.evrlc"
             # e.g. "light_curves/minipix2/000002.evrlc"
