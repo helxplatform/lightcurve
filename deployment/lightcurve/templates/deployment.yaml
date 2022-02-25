@@ -39,7 +39,14 @@ spec:
             {{- range $key, $value := .Values.extraEnv }}
             - name: {{ $key }}
               value: {{ $value | quote }}
-            {{- end }}          
+            {{- end }}
+            {{- range $key, $value := .Values.lightcurve_s3 }}
+            - name: {{ $key }}
+              valueFrom:
+                secretKeyRef:
+                  name: lightcurve-s3
+                  key: {{ $key | quote }}
+            {{- end }}
           ports:
             - name: http
               containerPort: 8080

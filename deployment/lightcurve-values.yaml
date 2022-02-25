@@ -2,7 +2,12 @@ image:
   repository: wtstephens/lcservice
   tag: "0.0.3"
 
-extraEnv:
+# prior way
+# extraEnv:
+#   S3_ACCESS_KEY_ID: "--placeholder--"
+#   S3_SECRET_ACCESS_KEY: "--placeholder--"
+
+lightcurve_s3:
   S3_ACCESS_KEY_ID: "--placeholder--"
   S3_SECRET_ACCESS_KEY: "--placeholder--"
 
