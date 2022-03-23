@@ -15,9 +15,9 @@ The code was modified to use "boto3" for S3 api access from its original google 
 ## Building the docker image
 
 ```
-docker build -t wtstephens/lcservice:0.0.1 .
+docker build -t wtstephens/lcservice:0.0.2 .
 
-docker push wtstephens/lcservice:0.0.1
+docker push wtstephens/lcservice:0.0.2
 ```
 
 ## Running the image locally

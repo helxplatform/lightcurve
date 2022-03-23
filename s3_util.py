@@ -1,5 +1,6 @@
 
 import boto3
+import botocore
 
 class s3_util:
     def __init__(self):
